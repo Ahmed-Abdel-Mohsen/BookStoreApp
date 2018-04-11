@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/standard_margin"
+    tools:context=".AddActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@string/addactivity_Product" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edit_product_name"
+                style="@style/EditTextStyle"
+                android:hint="@string/addactivity_Name"
+                android:inputType="textCapWords" />
+
+            <EditText
+                android:id="@+id/edit_product_price"
+                style="@style/EditTextStyle"
+                android:hint="@string/addactivity_Price"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/edit_product_quantity"
+                style="@style/EditTextStyle"
+                android:hint="@string/addactivity_Quantity"
+                android:inputType="number" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@string/addactivity_Supplier" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edit_supplier_name"
+                style="@style/EditTextStyle"
+                android:hint="@string/addactivity_Name"
+                android:inputType="textCapWords" />
+
+            <EditText
+                android:id="@+id/edit_supplier_number"
+                style="@style/EditTextStyle"
+                android:hint="@string/addactivity_Number"
+                android:inputType="number" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

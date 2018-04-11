@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Book Store</string>
+    <string name="insert_dummy_data">Insert Dummy Data</string>
+    <string name="addactivity_Product">Product</string>
+    <string name="addactivity_Name">Name</string>
+    <string name="addactivity_Price">Price</string>
+    <string name="addactivity_Quantity">Quantity</string>
+    <string name="addactivity_Supplier">Supplier</string>
+    <string name="addactivity_Number">Phone Number</string>
+    <string name="save">Save</string>
+    <string name="add_new_book_label">Add a Book</string>
+</resources>
