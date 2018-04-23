@@ -41,7 +41,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
+
         ListView list = findViewById(R.id.list_view_book);
+
+        View emptyView = findViewById(R.id.empty_view);
+
+        list.setEmptyView(emptyView);
+
         adapter = new BookCursorAdapter(this, null);
         list.setAdapter(adapter);
 
@@ -69,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void insertDummyData() {
         ContentValues dummyBook = new ContentValues();
         dummyBook.put(BookEntry.COLUMN_PRODUCT_NAME, "Dummy Book Name");
-        dummyBook.put(BookEntry.COLUMN_PRICE, "20$");
+        dummyBook.put(BookEntry.COLUMN_PRICE, "20");
         dummyBook.put(BookEntry.COLUMN_QUANTITY, "150");
         dummyBook.put(BookEntry.COLUMN_SUPPLIER_NAME, "Nothing");
         dummyBook.put(BookEntry.COLUMN_SUPPLIER_NUMBER, "01210757269");

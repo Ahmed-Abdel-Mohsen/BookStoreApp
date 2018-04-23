@@ -24,4 +24,6 @@
     <string name="unsaved_changes_dialog_msg">Discard your changes and quite editing?</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep Editing</string>
+    <string name="empty_view_title_text">Your Inventory is Empty</string>
+    <string name="empty_view_subtitle_text">Get starting by Adding new Products</string>
 </resources>

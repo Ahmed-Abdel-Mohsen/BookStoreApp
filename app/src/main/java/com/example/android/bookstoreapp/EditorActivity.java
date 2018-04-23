@@ -65,6 +65,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mDecreaseButton = findViewById(R.id.decrease);
         mOrderButton = findViewById(R.id.order_button);
 
+
         View.OnTouchListener mTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -100,12 +101,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View view) {
                 Uri callerUri = Uri.parse("tel:" + mSupplierNumber);
-                Intent intent = new Intent(Intent.ACTION_CALL);
+                Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(callerUri);
-                if (ActivityCompat.checkSelfPermission(EditorActivity.this, Manifest.permission.CALL_PHONE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
                 startActivity(intent);
             }
         });
