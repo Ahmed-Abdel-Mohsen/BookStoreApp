@@ -9,4 +9,19 @@
     <string name="addactivity_Number">Phone Number</string>
     <string name="save">Save</string>
     <string name="add_new_book_label">Add a Book</string>
+    <string name="edit_book_label">Edit Book</string>
+    <string name="sale">Sale</string>
+    <string name="quantity">quantity: </string>
+    <string name="delete">delete</string>
+    <string name="order">Order</string>
+    <string name="error_with_saving_product">Error with saving product</string>
+    <string name="product_saved">Product saved successfully</string>
+    <string name="delete_dialog_message">Delete this book?</string>
+    <string name="delete_dialog">Delete</string>
+    <string name="cancel_dialog">Cancel</string>
+    <string name="editor_delete_book_failed">Error with deleting book</string>
+    <string name="editor_delete_book_successful">book deleted</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quite editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
 </resources>

@@ -2,10 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".AddActivity">
+    tools:context=".EditorActivity">
     <item
         android:id="@+id/save"
         android:icon="@drawable/ic_done"
         android:title="@string/save"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/delete"
+        android:title="@string/delete"
+        app:showAsAction="never" />
 </menu>

@@ -1,24 +1,31 @@
 package com.example.android.bookstoreapp;
 
+import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.bookstoreapp.data.BookContract.BookEntry;
-import com.example.android.bookstoreapp.data.BookDbHelper;
+import com.example.android.bookstoreapp.data.BookCursorAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private BookDbHelper mDbHelper;
+    private BookCursorAdapter adapter;
+    private static final int BOOK_LOADER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,64 +36,29 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
                 startActivity(intent);
             }
         });
 
-        mDbHelper = new BookDbHelper(this);
-        displayDatabaseInfo();
-    }
+        ListView list = findViewById(R.id.list_view_book);
+        adapter = new BookCursorAdapter(this, null);
+        list.setAdapter(adapter);
 
-    private void displayDatabaseInfo() {
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] projection = new String[]{
-                BookEntry._ID,
-                BookEntry.COLUMN_PRODUCT_NAME,
-                BookEntry.COLUMN_PRICE,
-                BookEntry.COLUMN_QUANTITY,
-                BookEntry.COLUMN_SUPPLIER_NAME,
-                BookEntry.COLUMN_SUPPLIER_NUMBER
-        };
-
-        Cursor cursor = db.query(
-                BookEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null);
-        try {
-            TextView textView = findViewById(R.id.textview_main);
-            textView.setText("The book table contains " + cursor.getCount() + " rows\n\n");
-            int idIndex = cursor.getColumnIndex(BookEntry._ID);
-            int productNameIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRODUCT_NAME);
-            int priceIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRICE);
-            int quantityIndex = cursor.getColumnIndex(BookEntry.COLUMN_QUANTITY);
-            int supplierNameIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_NAME);
-            int supplierNumberIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_NUMBER);
-            while (cursor.moveToNext()) {
-                textView.append(cursor.getString(idIndex) + "-" +
-                        cursor.getString(productNameIndex) + "-" +
-                        cursor.getString(priceIndex) + "-" +
-                        cursor.getString(quantityIndex) + "-" +
-                        cursor.getString(supplierNameIndex) + "-" +
-                        cursor.getString(supplierNumberIndex) + "\n");
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Uri clickedBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+                Log.v("Uri: ", clickedBookUri.toString());
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                intent.setData(clickedBookUri);
+                startActivity(intent);
             }
-        } catch (Exception e) {
+        });
 
-        } finally {
-            cursor.close();
-        }
+        getLoaderManager().initLoader(BOOK_LOADER, null, this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,15 +67,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertDummyData() {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues dummyBook = new ContentValues();
         dummyBook.put(BookEntry.COLUMN_PRODUCT_NAME, "Dummy Book Name");
         dummyBook.put(BookEntry.COLUMN_PRICE, "20$");
         dummyBook.put(BookEntry.COLUMN_QUANTITY, "150");
         dummyBook.put(BookEntry.COLUMN_SUPPLIER_NAME, "Nothing");
         dummyBook.put(BookEntry.COLUMN_SUPPLIER_NUMBER, "01210757269");
-        long newRowId = db.insert(BookEntry.TABLE_NAME, null, dummyBook);
-        Toast.makeText(this, "new dummy book inserted with row: " + newRowId, Toast.LENGTH_SHORT).show();
+        Uri uri = getContentResolver().insert(BookEntry.CONTENT_URI, dummyBook);
+        Log.v("insertDummyData", uri.toString());
+        Toast.makeText(this, "Book saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -111,9 +83,30 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.insert_dummy_data:
                 insertDummyData();
-                displayDatabaseInfo();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        String[] projection = new String[]{
+                BookEntry._ID,
+                BookEntry.COLUMN_PRODUCT_NAME,
+                BookEntry.COLUMN_QUANTITY,
+                BookEntry.COLUMN_PRICE
+        };
+        return new CursorLoader(this, BookEntry.CONTENT_URI, projection,
+                null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        adapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        adapter.swapCursor(null);
     }
 }
